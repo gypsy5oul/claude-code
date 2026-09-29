@@ -76,9 +76,16 @@ async function closeIssueAsDuplicate(
     'PATCH',
     {
       state: 'closed',
-      state_reason: 'duplicate',
-      labels: ['duplicate']
+      state_reason: 'duplicate'
     }
+  );
+
+  // `labels` on the issue PATCH replaces every label; this endpoint adds one.
+  await githubRequest(
+    `/repos/${owner}/${repo}/issues/${issueNumber}/labels`,
+    token,
+    'POST',
+    { labels: ['duplicate'] }
   );
 
   await githubRequest(
